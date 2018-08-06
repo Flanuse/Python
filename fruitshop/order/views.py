@@ -38,10 +38,12 @@ def amountprice(request):
     if request.method == 'GET':
         user = request.user
         orders = OrderModel.objects.filter(user=user, o_status=0)
+        price_list = []
+        b_list = []
         for order in orders:
             order_infos = OrderGoodsModel.objects.filter(order_id=order.id)
             amount = 0
-            price_list = []
+
             for order_info in order_infos:
                 price = order_info.goods_num * int(order_info.goods.goodsprice)
                 amount += price
@@ -50,20 +52,39 @@ def amountprice(request):
                     'price': price
                 }
                 price_list.append(data)
-        return JsonResponse({'amount': amount, 'price_list': price_list, 'code': 200})
+            b = {
+                'order_id': order.id,
+                'amount': amount
+            }
+            b_list.append(b)
+        return JsonResponse({'b_list': b_list, 'price_list': price_list, 'code': 200})
 
-        # orders1 = OrderModel.objects.filter(user=user, o_status=1)
-        # for order1 in orders1:
-        #     order1_infos = OrderGoodsModel.objects.filter(order_id=order1.id)
-        #     amountpr = 0
-        #     price_list1 = []
-        #     for order1_info in order1_infos:
-        #         price1 = order1_info.goods_num * int(order1_info.goods.goodsprice)
-        #         amountpr += price1
-        #         data = {
-        #             'order_id': order1_info.id,
-        #             'price1': price1
-        #         }
-        #         price_list1.append(data)
+
+def price(request):
+    if request.method == 'GET':
+        user = request.user
+        orders = OrderModel.objects.filter(user=user, o_status=1)
+        price_list = []
+        b_list = []
+        for order in orders:
+            order_infos = OrderGoodsModel.objects.filter(order_id=order.id)
+            amount = 0
+
+            for order_info in order_infos:
+                price = order_info.goods_num * int(order_info.goods.goodsprice)
+                amount += price
+                data = {
+                    'order_id': order_info.id,
+                    'price': price
+                }
+                price_list.append(data)
+            b = {
+                'order_id': order.id,
+                'amount': amount
+            }
+            b_list.append(b)
+        return JsonResponse({'b_list': b_list, 'price_list': price_list, 'code': 200})
+
+
 
 

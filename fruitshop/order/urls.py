@@ -8,8 +8,11 @@ urlpatterns = [
     # url(r'^order_info', views.order_info, name='order_info'),
     # 改变订单状态
     url(r'^orderchange/', views.orderchange, name='orderchange'),
-    # 计算价格
+    # 计算未付款价格
     url(r'^amountprice/', views.amountprice, name='amountprice'),
+    # 计算已付款价格
+    url(r'^price/', views.price, name='price'),
+
 
 
 ]

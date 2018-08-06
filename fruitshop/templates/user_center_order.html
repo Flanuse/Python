@@ -72,40 +72,39 @@
 								</ul>
                                 {% endfor %}
 							</td>
-							<td width="15%" id="amountpr">33.60元</td>
+							<td width="15%" id="amountpr_{{ order_wait.id }}">33.60元</td>
 							<td width="15%">待付款</td>
 							<td width="15%"><a onclick="changeorder({{ order_wait.id}})" href="" class="oper_btn" >去付款</a></td>
 						</tr>
 					</tbody>
 				</table>
 				{% endfor %}
-                {% for order_payed in orders_payed %}
+                {% for order_pay in orders_payed %}
 				<ul class="order_list_th w978 clearfix">
-					<li class="col01">{{ order_payed.o_create }}</li>
-					<li class="col02">订单号：{{ order_payed.o_num }}</li>
-					<li class="col02 stress">已支付</li>			
+					<li class="col01">{{ order_pay.o_create }}</li>
+					<li class="col02">订单号：{{ order_pay.o_num }}</li>
+					<li class="col02 stress">已支付</li>
 				</ul>
 				<table class="order_list_table w980">
 					<tbody>
 						<tr>
 							<td width="55%">
-                                {% for ordergood in order_payed.ordergoodsmodel_set.all %}
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="/static/images/goods/{{ ordergood.goods.goodspic }}"></li>
-									<li class="col02">{{ ordergood.goods.goodsname }}<em>{{ ordergood.goods.goodsprice }}{{ ordergood.goods.goodsunit }}</em></li>
-									<li class="col03">{{ ordergood.goods_num }}</li>
-									<li class="col04">11.80元</li>	
+                                {% for ordergoods in order_pay.ordergoodsmodel_set.all %}
+								<ul class="order_goods_list clearfix">
+									<li class="col01"><img src="/static/images/goods/{{ ordergoods.goods.goodspic }}"></li>
+									<li class="col02">{{ ordergoods.goods.goodsname }}<em>{{ ordergoods.goods.goodsprice }}{{ ordergoods.goods.goodsunit }}</em></li>
+									<li class="col03">{{ ordergoods.goods_num }}</li>
+									<li class="col04" id="pre{{ ordergoods.id }}">11.80元</li>
 								</ul>
                                 {% endfor %}
-
 							</td>
-							<td width="15%" id="amountpr1">33.60元</td>
+							<td width="15%" id="amountpr{{ order_pay.id }}">33.60元</td>
 							<td width="15%">已付款</td>
-							<td width="15%"><a href="#" class="oper_btn">查看物流</a></td>
+							<td width="15%"><a  href="" class="oper_btn" >查看物流</a></td>
 						</tr>
 					</tbody>
 				</table>
-                {% endfor %}
+				{% endfor %}
 				<div class="pagenation">
 					<a href="#"><上一页</a>
 					<a href="#" class="active">1</a>

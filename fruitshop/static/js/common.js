@@ -166,6 +166,11 @@ $(function () {
                  $('#pre_' + data.price_list[i].order_id).text(data.price_list[i].price + '元')
 
                  }
+                 for (var i = 0; i < data.b_list.length; i++) {
+                 $('#amountpr_' + data.b_list[i].order_id).text(data.b_list[i].amount + '元')
+
+                 }
+
              }
 
         },
@@ -174,4 +179,30 @@ $(function () {
         }
 
     });
+
+    $.ajax({
+        url: '/order/price/',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+             if(data.code == 200){
+                 // $('#amountpr').text(data.amount)
+                 for (var i = 0; i < data.price_list.length; i++) {
+                 $('#pre' + data.price_list[i].order_id).text(data.price_list[i].price + '元')
+
+                 }
+                 for (var i = 0; i < data.b_list.length; i++) {
+                 $('#amountpr' + data.b_list[i].order_id).text(data.b_list[i].amount + '元')
+
+                 }
+
+             }
+
+        },
+        error: function (data) {
+            alert("请求失败")
+        }
+
+    });
+
 });
