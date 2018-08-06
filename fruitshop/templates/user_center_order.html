@@ -3,8 +3,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>天天生鲜-用户中心</title>
-	<link rel="stylesheet" type="text/css" href="css/reset.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
 </head>
 <body>
 	<div class="header_con">
@@ -32,7 +32,7 @@
 	</div>
 
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
 		<div class="search_con fr">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -49,67 +49,63 @@
 				<li><a href="user_center_site.html">· 收货地址</a></li>
 			</ul>
 		</div>
+
 		<div class="right_content clearfix">
 				<h3 class="common_title2">全部订单</h3>
+                {% for order_wait in orders_wait %}
 				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
+					<li class="col01">{{ order_wait.o_create }}</li>
+					<li class="col02">订单号：{{ order_wait.o_num }}</li>
 					<li class="col02 stress">未支付</li>		
 				</ul>
-
+                {% csrf_token %}
 				<table class="order_list_table w980">
 					<tbody>
 						<tr>
 							<td width="55%">
+                                {% for ordergoods in order_wait.ordergoodsmodel_set.all %}
 								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
+									<li class="col01"><img src="/static/images/goods/{{ ordergoods.goods.goodspic }}"></li>
+									<li class="col02">{{ ordergoods.goods.goodsname }}<em>{{ ordergoods.goods.goodsprice }}{{ ordergoods.goods.goodsunit }}</em></li>
+									<li class="col03">{{ ordergoods.goods_num }}</li>
+									<li class="col04" id="pre_{{ ordergoods.id }}">11.80元</li>
 								</ul>
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
+                                {% endfor %}
 							</td>
-							<td width="15%">33.60元</td>
+							<td width="15%" id="amountpr">33.60元</td>
 							<td width="15%">待付款</td>
-							<td width="15%"><a href="#" class="oper_btn">去付款</a></td>
+							<td width="15%"><a onclick="changeorder({{ order_wait.id}})" href="" class="oper_btn" >去付款</a></td>
 						</tr>
 					</tbody>
 				</table>
-				
+				{% endfor %}
+                {% for order_payed in orders_payed %}
 				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
+					<li class="col01">{{ order_payed.o_create }}</li>
+					<li class="col02">订单号：{{ order_payed.o_num }}</li>
 					<li class="col02 stress">已支付</li>			
 				</ul>
 				<table class="order_list_table w980">
 					<tbody>
 						<tr>
 							<td width="55%">
+                                {% for ordergood in order_payed.ordergoodsmodel_set.all %}
 								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
+									<li class="col01"><img src="/static/images/goods/{{ ordergood.goods.goodspic }}"></li>
+									<li class="col02">{{ ordergood.goods.goodsname }}<em>{{ ordergood.goods.goodsprice }}{{ ordergood.goods.goodsunit }}</em></li>
+									<li class="col03">{{ ordergood.goods_num }}</li>
 									<li class="col04">11.80元</li>	
 								</ul>
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
+                                {% endfor %}
+
 							</td>
-							<td width="15%">33.60元</td>
+							<td width="15%" id="amountpr1">33.60元</td>
 							<td width="15%">已付款</td>
 							<td width="15%"><a href="#" class="oper_btn">查看物流</a></td>
 						</tr>
 					</tbody>
 				</table>
-
+                {% endfor %}
 				<div class="pagenation">
 					<a href="#"><上一页</a>
 					<a href="#" class="active">1</a>
@@ -137,6 +133,7 @@
 		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
-	
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+     <script type="text/javascript" src="/static/js/common.js"></script>
 </body>
 </html>

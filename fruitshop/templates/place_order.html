@@ -21,7 +21,7 @@
 				</div>
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
+					<a href="{% url 'user:my' %}">用户中心</a>
 					<span>|</span>
 					<a href="cart.html">{% url 'cart:tocart' %}</a>
 					<span>|</span>
@@ -82,7 +82,7 @@
 			<li class="col02"><img src="/static/images/goods/{{ goods.goods.goodspic }}"></li>
 			<li class="col03">{{ goods.goods.goodsname }}</li>
 			<li class="col04">{{ goods.goods.goodsunit }}</li>
-			<li class="col05">{{ goods.goods.goodsprice }}元</li>
+			<li class="col05">{{ goods.goods.goodsprice }}</li>
 			<li class="col06">{{ goods.goods_num }}</li>
 			<li class="col07"><span id="price_{{ goods.goods_id }}" style="font-size: 20px">0.00</span></li>
 		</ul>
@@ -100,7 +100,7 @@
 	</div>
 
 	<div class="order_submit clearfix">
-		<a href="javascript:;" id="order_btn">提交订单</a>
+		<a href="javascript:;" id="order_btn" onclick="changeorder({{ order_info.0.order_id }})">提交订单</a>
 	</div>	
 
 	<div class="footer">
@@ -127,22 +127,21 @@
 	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
      <script type="text/javascript" src="/static/js/common.js"></script>
 	<script type="text/javascript">
-        $(function () {
-            totalprice()
-        })
-		$('#order_btn').click(function() {
-			localStorage.setItem('order_finish',2);
 
-			$('.popup_con').fadeIn('fast', function() {
 
-				setTimeout(function(){
-					$('.popup_con').fadeOut('fast',function(){
-						window.location.href = 'index.html';
-					});	
-				},3000)
-				
-			});
-		});
+		{#$('#order_btn').click(function() {#}
+		{#	localStorage.setItem('order_finish',2);#}
+        {##}
+		{#	$('.popup_con').fadeIn('fast', function() {#}
+        {##}
+		{#		setTimeout(function(){#}
+		{#			$('.popup_con').fadeOut('fast',function(){#}
+		{#				window.location.href = 'index.html';#}
+		{#			});	#}
+		{#		},3000)#}
+		{#		#}
+		{#	});#}
+		{#});#}
 
 	</script>
 </body>

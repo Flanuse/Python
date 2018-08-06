@@ -67,9 +67,9 @@ function totalprice() {
         if(data.code =='200') {
 
             $('#totalprice').text(data.total_price)
-            // a = $('#totalprice').text(data.total_price)
-            // b = a + 10
-            // $('#totalprice1').text(b)
+            a = data.total_price
+            b = a + 10
+            $('#totalprice1').text(b)
             $('#amount_num').text(data.amount)
             // $('#changecart_' + id).prop('checked', false)
             for (var i = 0; i < data.price_list.length; i++) {
@@ -133,19 +133,45 @@ function changestatus(id) {
 
 }
 
-// function order_goods() {
-//     $.ajax({
-//         url: '/order/order/',
-//         type: 'GET',
-//         dataType: 'json',
-//         success: function (data) {
-//             if(data.code == 200){
-//                 location.href = '/order/order_info/?order_id=' + data.order_id
-//             }
-//         },
-//         error: function (data) {
-//             alert('请求失败')
-//         }
-//
-//     });
-// }
+function changeorder(id) {
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+    $.ajax({
+        url: '/order/orderchange/',
+        type: 'POST',
+        data: {'order_id': id},
+        dataType: 'json',
+        headers: {'X-CSRFToken': csrf},
+        success: function (data) {
+            if(data.code == 200){
+                // alert(data)
+                location.href = '/user/my/'
+            }
+        },
+        error: function (data) {
+            alert('请求失败')
+        }
+
+    })
+}
+
+$(function () {
+    $.ajax({
+        url: '/order/amountprice/',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+             if(data.code == 200){
+                 // $('#amountpr').text(data.amount)
+                 for (var i = 0; i < data.price_list.length; i++) {
+                 $('#pre_' + data.price_list[i].order_id).text(data.price_list[i].price + '元')
+
+                 }
+             }
+
+        },
+        error: function (data) {
+            alert("请求失败")
+        }
+
+    });
+});

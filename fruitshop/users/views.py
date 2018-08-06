@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from cart.models import CarModel
+from order.models import OrderModel
 from users.models import UserModel, TicketModel
 from utils.functions import get_ticket
 
@@ -53,4 +55,14 @@ def register(request):
                                  email=email, img=img)
         return HttpResponseRedirect(reverse('user:login'))
 
+
+def my(request):
+    if request.method == 'GET':
+        user = request.user
+        carts = CarModel.objects.filter(user=user, is_select=True)
+        carts.delete()
+        orders_payed = OrderModel.objects.filter(user=user, o_status=1)
+        orders_wait = OrderModel.objects.filter(user=user, o_status=0)
+
+        return render(request, 'user_center_order.html', {'orders_payed': orders_payed, 'orders_wait': orders_wait})
 
